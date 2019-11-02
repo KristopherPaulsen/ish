@@ -18,9 +18,11 @@ const main = (data) => {
     },
   );
 
-  const results = searchStrings.map(string => fuse.search(string)[0])
-                               .filter(result => result !== undefined)
-                               .map(({ item }) => item);
+  const results = searchStrings
+    .map(string => fuse.search(string))
+    .flat()
+    .sort((a,b) => a.score - b.score)
+    .map(({ item }) => item);
 
   if (!results[0]) return;
 
