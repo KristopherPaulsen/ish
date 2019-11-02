@@ -1,8 +1,7 @@
-# When you need to find a string that's close..ish
+# ish
+> When you need to find a string that's close..ish
 
 </br>
-</br>
-
 
 ## Getting Started
   ```bash
