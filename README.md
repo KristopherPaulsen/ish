@@ -4,6 +4,11 @@
 </br>
 
 ## Getting Started
+
+  ```bash
+    npm install -g @kcpaulsen/ish
+  ```
+
   ```bash
   echo -e "Food\nDrink\nSnacks" | ish 'fod'
     # Food
@@ -24,3 +29,8 @@
   echo -e "Food\nDrink\nSnacks" | ish 'fdd' 'Dink'
     # Drink
   ```
+
+## About
+
+  It's pretty much a glorified wrapper around FuseJs, but why not make things a bit
+  easier?
