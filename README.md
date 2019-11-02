@@ -6,7 +6,7 @@
 ## Getting Started
 
   ```bash
-    npm install -g @kcpaulsen/ish
+  npm install -g @kcpaulsen/ish
   ```
 
   ```bash
