@@ -22,7 +22,9 @@ const main = (data) => {
                                .filter(result => result !== undefined)
                                .map(({ item }) => item);
 
-  console.log(results.join('\n'));
+  if (!results[0]) return;
+
+  console.log(results[0]);
 }
 
 process.stdin.on('data', main);
