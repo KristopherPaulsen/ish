@@ -3,7 +3,6 @@
 const Fuse = require('fuse.js');
 
 const main = (data) => {
-
   const searchStrings = process.argv.slice(2);
   const list = data.toString().split('\n');
 
@@ -28,5 +27,27 @@ const main = (data) => {
 
   console.log(results[0]);
 }
+
+const printHelp = () => {
+console.log(`
+
+  echo -e 'foo' | ish 'fo'
+
+  Example (Single Match):
+
+    echo -e "Food\nDrink\nSnacks" | ish 'fod'
+      # Food
+
+  Example (Multi Matching)
+
+    echo -e "Food\nDrink\nSnacks" | ish 'fodd' 'Drink'
+      # Food
+
+    echo -e "Food\nDrink\nSnacks" | ish 'fdd' 'Dink'
+
+`);
+}
+
+// -----------------------------------------------------------------------------
 
 process.stdin.on('data', main);
