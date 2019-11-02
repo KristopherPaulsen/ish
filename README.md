@@ -5,10 +5,10 @@
 
 
 ## Getting Started
-    ```bash
-    echo -e "Food\nDrink\nSnacks" | ish 'fod'
-      # Food
-    ```
+  ```bash
+  echo -e "Food\nDrink\nSnacks" | ish 'fod'
+    # Food
+  ```
 
 ## Multi Matching
 
@@ -16,12 +16,12 @@
   It will match left-to-right, favoring first potential matches over later ones,
   but fallback if sufficently mismatched
 
-    ```bash
-    echo -e "Food\nDrink\nSnacks" | ish 'fodd' 'Drink'
-      # Food
-    ```
+  ```bash
+  echo -e "Food\nDrink\nSnacks" | ish 'fodd' 'Drink'
+    # Food
+  ```
 
-    ```bash
-    echo -e "Food\nDrink\nSnacks" | ish 'fdd' 'Dink'
-      # Drink
-    ```
+  ```bash
+  echo -e "Food\nDrink\nSnacks" | ish 'fdd' 'Dink'
+    # Drink
+  ```
