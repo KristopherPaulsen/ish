@@ -20,6 +20,6 @@
     "fuse.js": "^3.4.5"
   },
   "bin": {
-    "ish": "./bin/index.js"
+    "ish": "./index.js"
   }
 }
