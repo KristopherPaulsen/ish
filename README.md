@@ -35,7 +35,7 @@
     # { "text": "Food" }
 
   echo "Food" | ish 'food' --json-string
-    # "{\\"text\\":\\"Food\\"}"
+    # "{\"text\":\"Food\"}"
   ```
 
 ## About
