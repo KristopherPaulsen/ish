@@ -1,10 +1,10 @@
 {
   "name": "@kcpaulsen/ish",
-  "version": "1.0.16",
+  "version": "1.0.17",
   "description": "Fuzzy command line cli tool",
   "main": "./index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "keywords": [
     "fuzzy",
@@ -25,5 +25,8 @@
   },
   "bin": {
     "ish": "./index.js"
+  },
+  "devDependencies": {
+    "jest": "^24.9.0"
   }
 }
