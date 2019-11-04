@@ -45,10 +45,6 @@ const main = ({ stdin, args }) => {
 
   const matches = findMatch(searchStrings, listToSearch);
 
-  printFormat(matches, args);
-}
-
-const printFormat = (matches, args) => {
   if(args.json && args.all) {
     console.log(JSON.stringify({ matches }));
   }
