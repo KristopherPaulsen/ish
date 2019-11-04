@@ -5,7 +5,7 @@ const fs = require('fs');
 const { promisify } = require('util');
 const readFileAsync = promisify(fs.readFile); // (A)
 
-const preMain = async () => {
+const main = async () => {
   if(!process.argv[2]) return;
 
   const args = yargs
@@ -36,14 +36,10 @@ const preMain = async () => {
 
   const stdin = await readFileAsync(0, 'utf8');
 
-  main({ args, stdin });
-}
-
-const main = ({ stdin, args }) => {
-  const searchStrings = args._;
-  const listToSearch = stdin.toString().split('\n');
-
-  const matches = findMatch(searchStrings, listToSearch);
+  const matches = findMatch({
+    searchStrings: args._,
+    listToSearch: stdin.toString().split('\n'),
+  });
 
   if(args.json && args.all) {
     console.log(JSON.stringify({ matches }));
@@ -65,7 +61,7 @@ const main = ({ stdin, args }) => {
   }
 }
 
-const findMatch = (searchStrings, listToSearch) => {
+const findMatch = ({ searchStrings, listToSearch }) => {
   const fuse = new Fuse(
     listToSearch.map(item => ({ item, })),
     {
@@ -134,4 +130,4 @@ const help = () => `
 `;
 // -----------------------------------------------------------------------------
 
-preMain();
+main();
