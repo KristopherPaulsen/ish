@@ -1,6 +1,9 @@
 #!/usr/bin/env node
 const yargs = require('yargs');
 const Fuse = require('fuse.js');
+const fs = require('fs');
+
+let stdinData = '';
 
 const preMain = () => {
   if(!process.argv[2]) return;
@@ -21,12 +24,14 @@ const preMain = () => {
     .epilogue(help())
     .argv;
 
-  process.stdin.on('data', data => main({ data, args }));
+  const stdin = fs.readFileSync(0, 'utf8');
+
+  main({ args, stdin });
 }
 
-const main = ({ data, args }) => {
+const main = ({ stdin, args }) => {
   const searchStrings = args._;
-  const listToSearch = data.toString().split('\n');
+  const listToSearch = stdin.toString().split('\n');
 
   const matches = findMatch(searchStrings, listToSearch);
 
