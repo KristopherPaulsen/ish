@@ -32,10 +32,24 @@
 
   ```bash
   echo -e "Food\\nDrink\\nSnacks" | ish 'fodd' --json
-    # { "text": "Food" }
+    # { "match": "Food" }
 
   echo "Food" | ish 'food' --json-string
-    # "{\"text\":\"Food\"}"
+    # "{\"match\":\"Food\"}"
+  ```
+
+## All matches Output
+
+  Listing all possible matches, left to right, best to worst.
+
+  ```bash
+  echo -e "Food\\nDrink\\nSnacks" | ish 'fodd' --all --json
+    # { "matches": [ 'Food', 'Fodge', 'Freak' ] }
+
+  echo -e "Food\\nDrink\\nSnacks" | ish 'fodd' --all
+    # Food
+    # Fodge
+    # Freak
   ```
 
 ## About

@@ -30,8 +30,6 @@ const main = ({ data, args }) => {
 
   const matches = findMatch(searchStrings, listToSearch);
 
-  if(!matches.length) return;
-
   printFormat(matches, args);
 }
 
@@ -43,16 +41,16 @@ const printFormat = (matches, args) => {
     console.log(toJsonString({ matches }));
   }
   else if(args.json) {
-    console.log({ match: matches[0] });
+    console.log({ match: matches[0] || '' });
   }
   else if (args.jsonString) {
-    console.log(toJsonString({ match: matches[0] }));
+    console.log(toJsonString({ match: matches[0] || '' }));
   }
   else if(args.all) {
     matches.forEach(match => console.log(match));
   }
   else {
-    console.log(matches[0]);
+    console.log(matches[0] || '');
   }
 }
 
@@ -111,8 +109,18 @@ const help = () => `
 
     echo "Food" | ish 'food' --json-string
       # "{\\"text\\":\\"Food\\"}"
-`;
 
+
+  Listing all possible matches, left to right, best to worst.
+
+    echo -e "Food\\nDrink\\nSnacks" | ish 'fodd' --all --json
+      # { "matches": [ 'Food', 'Fodge', 'Freak' ] }
+
+    echo -e "Food\\nDrink\\nSnacks" | ish 'fodd' --all
+      # Food
+      # Fodge
+      # Freak
+`;
 // -----------------------------------------------------------------------------
 
 preMain();
