@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-
 const yargs = require('yargs');
 const Fuse = require('fuse.js');
 
@@ -31,7 +30,7 @@ const main = ({ data, args }) => {
 
   const text = findMatch(searchStrings, listToSearch);
 
-  if(text) return;
+  if(!text) return;
 
   if(args.json) {
     console.log(JSON.stringify({ text }));
