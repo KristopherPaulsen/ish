@@ -10,6 +10,7 @@ const main = () => {
     .usage('\necho "Food" | ish "fodd"\n')
     .option('json-string', {
       type: 'string',
+      describe: 'Whether or not to return in string-json format',
     })
     .option('json', {
       type: 'boolean',
@@ -43,10 +44,9 @@ const program = ({ data, args }) => {
     .sort((a,b) => a.score - b.score)
     .map(({ item }) => item);
 
-  if(!results[0]) {
-    return;
-  }
-  else if(args.json) {
+  if(!results[0]) return;
+
+  if(args.json) {
     console.log(JSON.stringify({ text: results[0] }));
   }
   else if(args.jsonString) {
