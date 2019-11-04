@@ -112,10 +112,10 @@ const help = () => `
   Example (JSON output) Usefull for chaining with jq, fx, etc
 
     echo -e "Food\\nDrink\\nSnacks" | ish 'fodd' --json
-      # { "text": "Food" }
+      # { "match": "Food" }
 
     echo "Food" | ish 'food' --json-string
-      # "{\\"text\\":\\"Food\\"}"
+      # "{\\"match\\":\\"Food\\"}"
 
 
   Listing all possible matches, left to right, best to worst.
