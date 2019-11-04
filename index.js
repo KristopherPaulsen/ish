@@ -44,7 +44,7 @@ const program = ({ data, args }) => {
   }
 }
 
-const findMatch(searchStrings, listToSearch) => {
+const findMatch = (searchStrings, listToSearch) => {
   const fuse = new Fuse(
     listToSearch.map(item => ({ item, })),
     {
