@@ -3,19 +3,31 @@
 const yargs = require('yargs');
 const Fuse = require('fuse.js');
 
-const main = (data) => {
+const main = () => {
+  if(!process.argv[2]) return;
+
   const args = yargs
+    .usage('\necho "Food" | ish "fodd"\n')
+    .option('json-string', {
+      type: 'string',
+    })
     .option('json', {
       type: 'boolean',
       coerce: (arg) => typeof(arg) !== 'undefined',
       describe: 'Whether or not to return in json format',
-   }).argv;
+    })
+    .epilogue(help())
+    .argv;
 
+  process.stdin.on('data', (data) => program({ data, args }));
+}
+
+const program = ({ data, args }) => {
   const searchStrings = args._;
-  const list = data.toString().split('\n');
+  const listToSearch = data.toString().split('\n');
 
   const fuse = new Fuse(
-    list.map(item => ({ item, })),
+    listToSearch.map(item => ({ item, })),
     {
       keys: ['item'],
       id: 'item',
@@ -37,20 +49,31 @@ const main = (data) => {
   else if(args.json) {
     console.log(JSON.stringify({ text: results[0] }));
   }
+  else if(args.jsonString) {
+    console.log(toJsonString({ text: results[0] }));
+  }
   else {
     console.log(results[0]);
   }
 }
 
-const printHelp = () => {
-console.log(`
+const toJsonString = (obj) => JSON.stringify(JSON.stringify(obj));
 
-  echo -e 'foo' | ish 'fo'
+//polyfill from stackoverflow
+Object.defineProperty(Array.prototype, 'flat', {
+  value: function(depth = 1) {
+    return this.reduce(function (flat, toFlatten) {
+      return flat.concat((Array.isArray(toFlatten) && (depth>1)) ? toFlatten.flat(depth-1) : toFlatten);
+    }, []);
+  }
+});
 
+const help = () => `
   Example (Single Match):
 
     echo -e "Food\\nDrink\\nSnacks" | ish 'fod'
       # Food
+
 
   Example (Multi Matching)
 
@@ -60,17 +83,18 @@ console.log(`
     echo -e "Food\\nDrink\\nSnacks" | ish 'fdd' 'Dink'
       # Drink
 
-  With JSON output
+
+  Example (JSON output) Usefull for chaining with jq, fx, etc
 
     echo -e "Food\\nDrink\\nSnacks" | ish 'fodd' --json
       # { "text": "Food" }
 
-`);
-}
+    # Or, for a raw json string
+
+    echo "Food" | ish 'food' --json-string
+      # "{\\"text\\":\\"Food\\"}"
+`;
 
 // -----------------------------------------------------------------------------
-if (process.stdin.isTTY) {
-  if(!process.argv[2]) return;
 
-  process.stdin.on('data', main);
-}
+main();
