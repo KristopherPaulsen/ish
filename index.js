@@ -35,16 +35,16 @@ const main = ({ data, args }) => {
 
 const printFormat = (matches, args) => {
   if(args.json && args.all) {
-    console.log({ matches });
+    console.log(JSON.stringify({ matches }));
   }
   else if (args.jsonString && args.all) {
-    console.log(toJsonString({ matches }));
+    console.log(toEscapedJSON({ matches }));
   }
   else if(args.json) {
-    console.log({ match: matches[0] || '' });
+    console.log(JSON.stringify({ match: matches[0] || '' }));
   }
   else if (args.jsonString) {
-    console.log(toJsonString({ match: matches[0] || '' }));
+    console.log(toEscapedJSON({ match: matches[0] || '' }));
   }
   else if(args.all) {
     matches.forEach(match => console.log(match));
@@ -73,7 +73,7 @@ const findMatch = (searchStrings, listToSearch) => {
     .map(({ item }) => item);
 }
 
-const toJsonString = (obj) => JSON.stringify(JSON.stringify(obj));
+const toEscapedJSON = (obj) => JSON.stringify(JSON.stringify(obj));
 
 const trueIfDefined = (arg) => typeof(arg) !== 'undefined';
 
