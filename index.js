@@ -29,6 +29,22 @@ const program = ({ data, args }) => {
   const searchStrings = args._;
   const listToSearch = data.toString().split('\n');
 
+  const text = findMatch(searchStrings, listToSearch);
+
+  if(text) return;
+
+  if(args.json) {
+    console.log(JSON.stringify({ text }));
+  }
+  else if(args.jsonString) {
+    console.log(toJsonString({ text }));
+  }
+  else {
+    console.log(text);
+  }
+}
+
+const findMatch(searchStrings, listToSearch) => {
   const fuse = new Fuse(
     listToSearch.map(item => ({ item, })),
     {
@@ -40,23 +56,11 @@ const program = ({ data, args }) => {
     },
   );
 
-  const results = searchStrings
+  return searchStrings
     .map(string => fuse.search(string))
     .flat()
     .sort((a,b) => a.score - b.score)
-    .map(({ item }) => item);
-
-  if(!results[0]) return;
-
-  if(args.json) {
-    console.log(JSON.stringify({ text: results[0] }));
-  }
-  else if(args.jsonString) {
-    console.log(toJsonString({ text: results[0] }));
-  }
-  else {
-    console.log(results[0]);
-  }
+    .map(({ item }) => item)[0];
 }
 
 const toJsonString = (obj) => JSON.stringify(JSON.stringify(obj));
