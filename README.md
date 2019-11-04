@@ -30,6 +30,18 @@
     # Drink
   ```
 
+  ```bash
+  Example (JSON output types). Usefull for chaining with jq, fx, etc
+
+    echo -e "Food\\nDrink\\nSnacks" | ish 'fodd' --json
+      # { "text": "Food" }
+
+    # Or, for a raw json string
+
+    echo "Food" | ish 'food' --json-string
+      # "{\\"text\\":\\"Food\\"}"
+  ```
+
 ## About
 
   It's pretty much a glorified wrapper around FuseJs, but why not make things a bit
