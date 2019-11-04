@@ -21,6 +21,16 @@ const preMain = async () => {
       describe: 'Whether or not to return in json format',
       coerce: trueIfDefined,
     })
+    .option('json-string', {
+      type: 'boolean',
+      describe: 'Whether or not to return in json string format',
+      coerce: trueIfDefined,
+    })
+    .option('all', {
+      type: 'boolean',
+      describe: 'Whether or not to return ALL matches, ranked best to worst, left to right',
+      coerce: trueIfDefined,
+    })
     .epilogue(help())
     .argv;
 
