@@ -1,9 +1,17 @@
 #!/usr/bin/env node
 
+const yargs = require('yargs');
 const Fuse = require('fuse.js');
 
 const main = (data) => {
-  const searchStrings = process.argv.slice(2);
+  const args = yargs
+    .option('json', {
+      type: 'boolean',
+      coerce: (arg) => typeof(arg) !== 'undefined',
+      describe: 'Whether or not to return in json format',
+   }).argv;
+
+  const searchStrings = args._;
   const list = data.toString().split('\n');
 
   const fuse = new Fuse(
@@ -23,9 +31,15 @@ const main = (data) => {
     .sort((a,b) => a.score - b.score)
     .map(({ item }) => item);
 
-  if (!results[0]) return;
-
-  console.log(results[0]);
+  if(!results[0]) {
+    return;
+  }
+  else if(args.json) {
+    console.log(JSON.stringify({ text: results[0] }));
+  }
+  else {
+    console.log(results[0]);
+  }
 }
 
 const printHelp = () => {
@@ -35,19 +49,29 @@ console.log(`
 
   Example (Single Match):
 
-    echo -e "Food\nDrink\nSnacks" | ish 'fod'
+    echo -e "Food\\nDrink\\nSnacks" | ish 'fod'
       # Food
 
   Example (Multi Matching)
 
-    echo -e "Food\nDrink\nSnacks" | ish 'fodd' 'Drink'
+    echo -e "Food\\nDrink\\nSnacks" | ish 'fodd' 'Drink'
       # Food
 
-    echo -e "Food\nDrink\nSnacks" | ish 'fdd' 'Dink'
+    echo -e "Food\\nDrink\\nSnacks" | ish 'fdd' 'Dink'
+      # Drink
+
+  With JSON output
+
+    echo -e "Food\\nDrink\\nSnacks" | ish 'fodd' --json
+      # { "text": "Food" }
 
 `);
 }
 
 // -----------------------------------------------------------------------------
 
-process.stdin.on('data', main);
+if (process.stdin.isTTY) {
+  if(!process.argv[2]) return;
+
+  process.stdin.on('data', main);
+}
