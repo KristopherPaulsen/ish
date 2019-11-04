@@ -9,8 +9,10 @@ const main = () => {
   const args = yargs
     .usage('\necho "Food" | ish "fodd"\n')
     .option('json-string', {
+      alias: 'jsonString',
       type: 'string',
       describe: 'Whether or not to return in string-json format',
+      coerce: (arg) => typeof(arg) !== 'undefined',
     })
     .option('json', {
       type: 'boolean',
