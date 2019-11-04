@@ -23,23 +23,19 @@
   ```bash
   echo -e "Food\nDrink\nSnacks" | ish 'fodd' 'Drink'
     # Food
-  ```
 
-  ```bash
   echo -e "Food\nDrink\nSnacks" | ish 'fdd' 'Dink'
     # Drink
   ```
 
+## JSON Output (simple and raw-string)
+
   ```bash
-  Example (JSON output types). Usefull for chaining with jq, fx, etc
+  echo -e "Food\\nDrink\\nSnacks" | ish 'fodd' --json
+    # { "text": "Food" }
 
-    echo -e "Food\\nDrink\\nSnacks" | ish 'fodd' --json
-      # { "text": "Food" }
-
-    # Or, for a raw json string
-
-    echo "Food" | ish 'food' --json-string
-      # "{\\"text\\":\\"Food\\"}"
+  echo "Food" | ish 'food' --json-string
+    # "{\\"text\\":\\"Food\\"}"
   ```
 
 ## About
