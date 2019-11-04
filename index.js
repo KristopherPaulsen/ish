@@ -3,7 +3,7 @@
 const yargs = require('yargs');
 const Fuse = require('fuse.js');
 
-const main = () => {
+const preMain = () => {
   if(!process.argv[2]) return;
 
   const args = yargs
@@ -12,20 +12,20 @@ const main = () => {
       alias: 'jsonString',
       type: 'string',
       describe: 'Whether or not to return in string-json format',
-      coerce: (arg) => typeof(arg) !== 'undefined',
+      coerce: trueIfDefined,
     })
     .option('json', {
       type: 'boolean',
-      coerce: (arg) => typeof(arg) !== 'undefined',
       describe: 'Whether or not to return in json format',
+      coerce: trueIfDefined,
     })
     .epilogue(help())
     .argv;
 
-  process.stdin.on('data', (data) => program({ data, args }));
+  process.stdin.on('data', data => main({ data, args }));
 }
 
-const program = ({ data, args }) => {
+const main = ({ data, args }) => {
   const searchStrings = args._;
   const listToSearch = data.toString().split('\n');
 
@@ -65,6 +65,8 @@ const findMatch = (searchStrings, listToSearch) => {
 
 const toJsonString = (obj) => JSON.stringify(JSON.stringify(obj));
 
+const trueIfDefined = (arg) => typeof(arg) !== 'undefined';
+
 //polyfill from stackoverflow
 Object.defineProperty(Array.prototype, 'flat', {
   value: function(depth = 1) {
@@ -95,12 +97,10 @@ const help = () => `
     echo -e "Food\\nDrink\\nSnacks" | ish 'fodd' --json
       # { "text": "Food" }
 
-    # Or, for a raw json string
-
     echo "Food" | ish 'food' --json-string
       # "{\\"text\\":\\"Food\\"}"
 `;
 
 // -----------------------------------------------------------------------------
 
-main();
+preMain();
