@@ -28,22 +28,35 @@ const main = ({ data, args }) => {
   const searchStrings = args._;
   const listToSearch = data.toString().split('\n');
 
-  const matches = findMatch({ searchStrings, listToSearch, args });
+  const matches = findMatch(searchStrings, listToSearch);
 
   if(!matches.length) return;
 
-  if(args.json) {
-    console.log(JSON.stringify({ matches, }));
+  printFormat(matches, args);
+}
+
+const printFormat = (matches, args) => {
+  if(args.json && args.all) {
+    console.log({ matches });
   }
-  else if(args.jsonString) {
+  else if (args.jsonString && args.all) {
     console.log(toJsonString({ matches }));
   }
-  else {
+  else if(args.json) {
+    console.log({ match: matches[0] });
+  }
+  else if (args.jsonString) {
+    console.log(toJsonString({ match: matches[0] }));
+  }
+  else if(args.all) {
     matches.forEach(match => console.log(match));
+  }
+  else {
+    console.log(matches[0]);
   }
 }
 
-const findMatch = ({ searchStrings, listToSearch, args }) => {
+const findMatch = (searchStrings, listToSearch) => {
   const fuse = new Fuse(
     listToSearch.map(item => ({ item, })),
     {
@@ -55,14 +68,11 @@ const findMatch = ({ searchStrings, listToSearch, args }) => {
     },
   );
 
-  const temp = searchStrings
+  return searchStrings
     .map(string => fuse.search(string))
     .flat()
     .sort((a,b) => a.score - b.score)
     .map(({ item }) => item);
-
-
-  return args.all ? temp : [temp[0]]
 }
 
 const toJsonString = (obj) => JSON.stringify(JSON.stringify(obj));
