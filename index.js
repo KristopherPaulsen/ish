@@ -2,10 +2,10 @@
 const yargs = require('yargs');
 const Fuse = require('fuse.js');
 const fs = require('fs');
+const { promisify } = require('util');
+const readFileAsync = promisify(fs.readFile); // (A)
 
-let stdinData = '';
-
-const preMain = () => {
+const preMain = async () => {
   if(!process.argv[2]) return;
 
   const args = yargs
@@ -24,7 +24,7 @@ const preMain = () => {
     .epilogue(help())
     .argv;
 
-  const stdin = fs.readFileSync(0, 'utf8');
+  const stdin = await readFileAsync(0, 'utf8');
 
   main({ args, stdin });
 }
