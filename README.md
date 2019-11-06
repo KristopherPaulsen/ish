@@ -52,7 +52,29 @@
     # Freak
   ```
 
-## Experimental (In Testing)
+## Supported Custom Options (So Far)
+
+  threshold
+  location
+  distance
+
+
+  These get added to the underyling fuse.js Options
+
+  ```javascript
+    {
+      shouldSort: true,
+      includeScore: true,
+      findAllMatches: true,
+      ...opts,
+      keys: ['item'],
+      id: 'item',
+    },
+  }
+  ```
+
+  Examples:
+
 
   ```bash
 

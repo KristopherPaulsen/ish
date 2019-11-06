@@ -6,6 +6,21 @@ const { promisify } = require('util');
 const readFileAsync = promisify(fs.readFile); // (A)
 const { isUndefined, get, camelCase } = require('lodash');
 
+const ALLOWED_OPTIONS = [
+  'distance',
+  'location',
+  'threshold',
+  'maxPatternLength',
+  'tokenize',
+  'matchAllTokens',
+  'findAllMatches',
+  'threshold',
+  'location',
+  'distance',
+  'maxPatternLength',
+  'minMatchCharLength',
+];
+
 const main = async () => {
   if(!process.argv[2]) return;
 
@@ -48,6 +63,8 @@ const main = async () => {
     opts: get(args, 'opts', {}),
   });
 
+  console.log(args.opts);
+
   if(args.json && args.all) {
     console.log(JSON.stringify({ matches }));
   }
@@ -72,12 +89,12 @@ const findMatch = ({ searchStrings, listToSearch, opts }) => {
   const fuse = new Fuse(
     listToSearch.map(item => ({ item, })),
     {
-      ...opts,
-      keys: ['item'],
-      id: 'item',
       shouldSort: true,
       includeScore: true,
       findAllMatches: true,
+      ...opts,
+      keys: ['item'],
+      id: 'item',
     },
   );
 
@@ -93,6 +110,7 @@ const trueIfDefined = (arg) => !isUndefined(arg);
 
 const toOpts = (arg) => (
   arg.map(item => item.split("\="))
+     .filter(([key, value]) => ALLOWED_OPTIONS.includes(camelCase(key)))
      .reduce((opts, [key, value]) => ({
         ...opts,
         [camelCase(key)]: safeEval(value),
