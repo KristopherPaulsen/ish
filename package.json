@@ -1,6 +1,6 @@
 {
   "name": "@kcpaulsen/ish",
-  "version": "1.0.26",
+  "version": "1.0.27",
   "description": "Fuzzy command line cli tool",
   "main": "./index.js",
   "scripts": {

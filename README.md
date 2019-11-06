@@ -43,10 +43,10 @@
   Listing all possible matches, left to right, best to worst.
 
   ```bash
-  echo -e "Food\\nDrink\\nSnacks" | ish 'fodd' --all --json
-    # { "matches": [ 'Food', 'Fodge', 'Freak' ] }
+  echo -e "Food\nFodge\nFreak" | ish 'fo' --all --json
+    # { "matches": [ "Food", "Fodge", "Freak" ] }
 
-  echo -e "Food\\nDrink\\nSnacks" | ish 'fodd' --all
+  echo -e "Food\nFodge\nFreak" | ish 'fo' --all
     # Food
     # Fodge
     # Freak
