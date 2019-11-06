@@ -110,7 +110,7 @@ describe('ish', () => {
       expect(result).toMatch("\"{\\\"matches\\\":[\\\"Food\\\",\\\"Fodd\\\"]}\"");
     });
   })
-  describe('weird inputs, no stdin', () => {
+  describe('weird inputs: no stdin', () => {
     it('returns nothing when given nothing', () => {
       const ish = spawnSync('./index.js');
 
@@ -128,7 +128,7 @@ describe('ish', () => {
     });
   });
 
-  describe('weird inputs, no string to match against', () => {
+  describe('weird inputs: no search strings', () => {
     it('returns nothing when matched against nothing', () => {
       const ish = spawnSync('./index.js', [], {
         input: 'Food\nFodd',
