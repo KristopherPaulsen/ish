@@ -1,5 +1,5 @@
 # ish
-> When you need to find a string that's close..ish
+> When you need to find a string that's close... ish
 
 </br>
 

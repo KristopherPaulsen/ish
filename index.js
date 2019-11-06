@@ -120,10 +120,10 @@ const help = () => `
 
   Listing all possible matches, left to right, best to worst.
 
-    echo -e "Food\\nDrink\\nSnacks" | ish 'fodd' --all --json
-      # { "matches": [ 'Food', 'Fodge', 'Freak' ] }
+    echo -e "Food\\nFodge\\nFreak" | ish 'fodd' --all --json
+      # { "matches": [ "Food", 'Fodge', "Freak" ] }
 
-    echo -e "Food\\nDrink\\nSnacks" | ish 'fodd' --all
+    echo -e "Foood\\nFodge\\nFreak" | ish 'fodd' --all
       # Food
       # Fodge
       # Freak
