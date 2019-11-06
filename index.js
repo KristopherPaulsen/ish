@@ -75,7 +75,7 @@ const findMatch = ({ searchStrings, listToSearch, opts }) => {
       ...opts,
       keys: ['item'],
       id: 'item',
-      sort: true,
+      shouldSort: true,
       includeScore: true,
       findAllMatches: true,
     },
@@ -84,7 +84,6 @@ const findMatch = ({ searchStrings, listToSearch, opts }) => {
   return searchStrings
     .map(string => fuse.search(string))
     .flat()
-    .sort((a,b) => a.score - b.score)
     .map(({ item }) => item);
 }
 
