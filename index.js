@@ -4,6 +4,7 @@ const Fuse = require('fuse.js');
 const fs = require('fs');
 const { promisify } = require('util');
 const readFileAsync = promisify(fs.readFile); // (A)
+const { isUndefined, get, camelCase } = require('lodash');
 
 const main = async () => {
   if(!process.argv[2]) return;
@@ -31,6 +32,11 @@ const main = async () => {
       describe: 'Whether or not to return ALL matches, ranked best to worst, left to right',
       coerce: trueIfDefined,
     })
+    .option('opts', {
+      type: 'array',
+      describe: '[EXPERIMENTAL]: Custom options for underlying fusejs, passed to initialization',
+      coerce: args => toOpts(args),
+    })
     .epilogue(help())
     .argv;
 
@@ -39,6 +45,7 @@ const main = async () => {
   const matches = findMatch({
     searchStrings: args._,
     listToSearch: stdin.toString().split('\n'),
+    opts: get(args, 'opts', {}),
   });
 
   if(args.json && args.all) {
@@ -48,10 +55,10 @@ const main = async () => {
     console.log(toEscapedJSON({ matches }));
   }
   else if(args.json) {
-    console.log(JSON.stringify({ match: matches[0] || '' }));
+    console.log(JSON.stringify({ match: get(matches, 0, '') }));
   }
   else if (args.jsonString) {
-    console.log(toEscapedJSON({ match: matches[0] || '' }));
+    console.log(toEscapedJSON({ match: get(matches, 0, '') }));
   }
   else if(args.all) {
     matches.forEach(match => console.log(match));
@@ -61,10 +68,11 @@ const main = async () => {
   }
 }
 
-const findMatch = ({ searchStrings, listToSearch }) => {
+const findMatch = ({ searchStrings, listToSearch, opts }) => {
   const fuse = new Fuse(
     listToSearch.map(item => ({ item, })),
     {
+      ...opts,
       keys: ['item'],
       id: 'item',
       sort: true,
@@ -82,7 +90,15 @@ const findMatch = ({ searchStrings, listToSearch }) => {
 
 const toEscapedJSON = (obj) => JSON.stringify(JSON.stringify(obj));
 
-const trueIfDefined = (arg) => typeof(arg) !== 'undefined';
+const trueIfDefined = (arg) => !isUndefined(arg);
+
+const toOpts = (arg) => (
+  arg.map(item => item.split("\="))
+     .reduce((opts, [key, value]) => ({
+        ...opts,
+        [camelCase(key)]: eval(value),
+     }), {})
+)
 
 //polyfill from stackoverflow
 Object.defineProperty(Array.prototype, 'flat', {
@@ -127,6 +143,15 @@ const help = () => `
       # Food
       # Fodge
       # Freak
+
+  Experimental:
+
+    echo "FOOD" | ish "food" --case-sensitive=true
+      #
+
+    echo "FOOD" | ish "FOOD" --case-sensitive=true
+      # FOOD
+
 `;
 // -----------------------------------------------------------------------------
 
