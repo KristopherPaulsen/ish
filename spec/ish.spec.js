@@ -119,7 +119,7 @@ describe('ish', () => {
 
       const result = ish.stdout.toString();
 
-      expect(result).toMatch('');
+      expect(result).toMatch(/^\n$/)
     });
 
     it('does match when --case-sensitive is true, and completely correct case is used', () => {

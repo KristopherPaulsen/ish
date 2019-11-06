@@ -7,18 +7,22 @@ const readFileAsync = promisify(fs.readFile); // (A)
 const { isUndefined, get, camelCase } = require('lodash');
 
 const ALLOWED_OPTIONS = [
-  'distance',
-  'location',
-  'threshold',
-  'maxPatternLength',
-  'tokenize',
-  'matchAllTokens',
-  'findAllMatches',
-  'threshold',
-  'location',
-  'distance',
-  'maxPatternLength',
-  'minMatchCharLength',
+  'caseSensitive',
+  //'distance',
+  //'location',
+  //'threshold',
+  //'distance',
+  //'location',
+  //'threshold',
+  //'maxPatternLength',
+  //'tokenize',
+  //'matchAllTokens',
+  //'findAllMatches',
+  //'threshold',
+  //'location',
+  //'distance',
+  //'maxPatternLength',
+  //'minMatchCharLength',
 ];
 
 const main = async () => {
@@ -62,8 +66,6 @@ const main = async () => {
     listToSearch: stdin.toString().split('\n'),
     opts: get(args, 'opts', {}),
   });
-
-  console.log(args.opts);
 
   if(args.json && args.all) {
     console.log(JSON.stringify({ matches }));
