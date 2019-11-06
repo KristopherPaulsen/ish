@@ -52,6 +52,17 @@
     # Freak
   ```
 
+## Experimental (In Testing)
+
+  ```bash
+
+    echo "FOOD" | ish "food" --opts case-sensitive=true
+      #
+
+    echo "FOOD" | ish "FOOD" --opts case-sensitive=true
+      # FOOD
+  ```
+
 ## About
 
   It's pretty much a glorified wrapper around FuseJs, but why not make things a bit

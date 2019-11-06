@@ -110,6 +110,42 @@ describe('ish', () => {
       expect(result).toMatch("\"{\\\"matches\\\":[\\\"Food\\\",\\\"Fodd\\\"]}\"");
     });
   })
+
+  describe('passing options', () => {
+    it('does not match when --case-sensitive is true, and completely wrong case is used', () => {
+      const ish = spawnSync('./index.js', ['food', '--opts', 'case-sensitive=true'], {
+        input: 'FOOD',
+      });
+
+      const result = ish.stdout.toString();
+
+      expect(result).toMatch('');
+    });
+
+    it('does match when --case-sensitive is true, and completely correct case is used', () => {
+      const ish = spawnSync('./index.js', ['FOOD', '--opts', 'case-sensitive=true'], {
+        input: 'FOOD',
+      });
+
+      const result = ish.stdout.toString();
+
+      expect(result).toMatch('FOOD');
+    });
+
+    it('keeps default options, even if the user tries to be naughty', () => {
+      const ish = spawnSync(
+        './index.js',
+        ['exampleString', '--opts', 'id=BAD_ID', 'keys=nowTheyAreGone', 'sort=noSortForYou'],
+        { input: 'exampleString', }
+      );
+
+      const result = ish.stdout.toString();
+
+      expect(result).toMatch('exampleString');
+    });
+
+  })
+
   describe('weird inputs: no stdin', () => {
     it('returns nothing when given nothing', () => {
       const ish = spawnSync('./index.js');

@@ -69,7 +69,6 @@ const main = async () => {
 }
 
 const findMatch = ({ searchStrings, listToSearch, opts }) => {
-  console.log(opts);
   const fuse = new Fuse(
     listToSearch.map(item => ({ item, })),
     {
@@ -97,9 +96,17 @@ const toOpts = (arg) => (
   arg.map(item => item.split("\="))
      .reduce((opts, [key, value]) => ({
         ...opts,
-        [camelCase(key)]: eval(value),
+        [camelCase(key)]: safeEval(value),
      }), {})
 )
+
+const safeEval = (value) => {
+  try {
+    return eval(value);
+  } catch(error) {
+    return false;
+  }
+}
 
 //polyfill from stackoverflow
 Object.defineProperty(Array.prototype, 'flat', {
