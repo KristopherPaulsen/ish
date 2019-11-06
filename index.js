@@ -69,6 +69,7 @@ const main = async () => {
 }
 
 const findMatch = ({ searchStrings, listToSearch, opts }) => {
+  console.log(opts);
   const fuse = new Fuse(
     listToSearch.map(item => ({ item, })),
     {
@@ -146,10 +147,10 @@ const help = () => `
 
   Experimental:
 
-    echo "FOOD" | ish "food" --case-sensitive=true
+    echo "FOOD" | ish "food" --opts case-sensitive=true
       #
 
-    echo "FOOD" | ish "FOOD" --case-sensitive=true
+    echo "FOOD" | ish "FOOD" --opts case-sensitive=true
       # FOOD
 
 `;
