@@ -31,7 +31,7 @@
 ## JSON Output (simple and raw-string)
 
   ```bash
-  echo -e "Food\\nDrink\\nSnacks" | ish 'fodd' --json
+  echo -e "Food\nDrink\nSnacks" | ish 'fodd' --json
     # { "match": "Food" }
 
   echo "Food" | ish 'food' --json-string
