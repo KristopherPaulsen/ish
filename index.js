@@ -151,14 +151,16 @@ const help = () => `
       # Fodge
       # Freak
 
-  Experimental:
+
+  Supported Options
+
+    case-sensitive
 
     echo "FOOD" | ish "food" --opts case-sensitive=true
       #
 
     echo "FOOD" | ish "FOOD" --opts case-sensitive=true
       # FOOD
-
 `;
 // -----------------------------------------------------------------------------
 

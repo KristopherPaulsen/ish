@@ -52,7 +52,9 @@
     # Freak
   ```
 
-## Experimental (In Testing)
+## Supported Options:
+
+  case-sensitive
 
   ```bash
 
