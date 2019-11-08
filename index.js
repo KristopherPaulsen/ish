@@ -154,15 +154,12 @@ const help = () => `
 
   Supported Options
 
-  *note* write camelCase as snake-case in cli args
-
-    caseSensitive
-    distance
-    threshold
-    location
-    maxPatternLength
-    minMatchCharLength
-
+    * caseSensitive
+    * distance
+    * threshold
+    * location
+    * maxPatternLength
+    * minMatchCharLength
 
    echo "FOOD" | ish "food" --opts case-sensitive=true
       #

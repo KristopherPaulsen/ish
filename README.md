@@ -54,14 +54,16 @@
 
 ## Supported Options:
 
-  caseSensitive
-  distance
-  threshold
-  location
-  maxPatternLength
-  minMatchCharLength
+  ```
+    --opts case-sensitive=true threshold=0.5 ...
+  ```
 
-  *note* write camelCase as snake-case
+  * caseSensitive
+  * distance
+  * threshold
+  * location
+  * maxPatternLength
+  * minMatchCharLength
 
   ```bash
 
