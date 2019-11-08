@@ -72,6 +72,10 @@
       # FOOD
   ```
 
+  For more information on Fusejs options, see:
+
+    https://fusejs.io
+
 ## About
 
   Heavily leveraging fuse.js (I mean heavy, like most-of-the-real-code), to make cli fuzzy matching,

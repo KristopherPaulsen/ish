@@ -154,13 +154,26 @@ const help = () => `
 
   Supported Options
 
-    case-sensitive
+  *note* write camelCase as snake-case in cli args
 
-    echo "FOOD" | ish "food" --opts case-sensitive=true
+    caseSensitive
+    distance
+    threshold
+    location
+    maxPatternLength
+    minMatchCharLength
+
+
+   echo "FOOD" | ish "food" --opts case-sensitive=true
       #
 
     echo "FOOD" | ish "FOOD" --opts case-sensitive=true
       # FOOD
+
+
+  For more information on Fusejs options, see:
+
+    https://fusejs.io
 `;
 // -----------------------------------------------------------------------------
 
