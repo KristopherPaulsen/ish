@@ -81,8 +81,6 @@ const findMatch = ({ searchStrings, listToSearch, opts }) => {
     },
   );
 
-  console.log(opts);
-
   return searchStrings
     .map(string => fuse.search(string))
     .flat()
