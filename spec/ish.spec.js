@@ -143,7 +143,6 @@ describe('ish', () => {
 
       expect(result).toMatch('exampleString');
     });
-
   })
 
   describe('weird inputs: no stdin', () => {

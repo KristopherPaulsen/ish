@@ -54,7 +54,14 @@
 
 ## Supported Options:
 
-  case-sensitive
+  caseSensitive
+  distance
+  threshold
+  location
+  maxPatternLength
+  minMatchCharLength
+
+  *note* write camelCase as snake-case
 
   ```bash
 
@@ -69,4 +76,3 @@
 
   Heavily leveraging fuse.js (I mean heavy, like most-of-the-real-code), to make cli fuzzy matching,
   and outputing to other programs like jq, fx, eat, gron, easy and fun.
-

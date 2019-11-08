@@ -34,7 +34,7 @@ const main = async () => {
     })
     .option('opts', {
       type: 'array',
-      describe: '[EXPERIMENTAL]: Custom options for underlying fusejs, passed to initialization',
+      describe: 'Custom options for underlying fusejs, passed to initialization',
       coerce: args => toOpts(args),
     })
     .epilogue(help())
@@ -64,7 +64,7 @@ const main = async () => {
     matches.forEach(match => console.log(match));
   }
   else {
-    console.log(matches[0] || '');
+    console.log(get(matches, 0, ''));
   }
 }
 
@@ -80,6 +80,8 @@ const findMatch = ({ searchStrings, listToSearch, opts }) => {
       findAllMatches: true,
     },
   );
+
+  console.log(opts);
 
   return searchStrings
     .map(string => fuse.search(string))
