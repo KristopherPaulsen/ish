@@ -9,7 +9,7 @@ const { isUndefined, get, camelCase } = require('lodash');
 const main = async () => {
   if(!process.argv[2]) return;
 
-  const args = yargs
+  const rawArgs = yargs
     .usage('\necho "Food" | ish "fodd"\n')
     .option('json-string', {
       alias: 'jsonString',
@@ -37,28 +37,32 @@ const main = async () => {
       describe: 'Custom options for underlying fusejs, passed to initialization',
       coerce: args => toOpts(args),
     })
+    .option('line', {
+      alias: 'l',
+      type: 'boolean',
+      describe: 'whether to process per line',
+      coerce: trueIfDefined,
+    })
     .epilogue(help())
     .argv;
 
+  const args = adjustSettings(rawArgs);
+
   const stdin = await readFileAsync(0, 'utf8');
 
-  const matches = findMatch({
-    searchStrings: args._,
-    listToSearch: stdin.toString().split('\n'),
-    opts: get(args, 'opts', {}),
-  });
+  const matches = args.line ? getLineMatches(args, stdin) : getMatches(args, stdin);
 
-  if(args.json && args.all) {
-    console.log(JSON.stringify({ matches }));
+  if (args.json && args.all) {
+    printJSON({ matches });
   }
   else if (args.jsonString && args.all) {
-    console.log(toEscapedJSON({ matches }));
+    printEscapedJson({ matches });
   }
   else if(args.json) {
-    console.log(JSON.stringify({ match: get(matches, 0, '') }));
+    printJSON({ match: get(matches, 0, '') });
   }
   else if (args.jsonString) {
-    console.log(toEscapedJSON({ match: get(matches, 0, '') }));
+    printEscapedJson({ match: get(matches, 0, '') });
   }
   else if(args.all) {
     matches.forEach(match => console.log(match));
@@ -67,6 +71,24 @@ const main = async () => {
     console.log(get(matches, 0, ''));
   }
 }
+
+const getMatches = (args, stdin) => (
+  findMatch({
+    searchStrings: args._,
+    listToSearch: stdin.toString().split('\n'),
+    opts: get(args, 'opts', {}),
+  })
+)
+
+const getLineMatches = (args, stdin) => (
+  stdin.trim().split("\n").map(line => {
+      return findMatch({
+        searchStrings: args._,
+        listToSearch: line.split(' '),
+        opts: get(args, 'opts', {})
+    })[0]
+  })
+);
 
 const findMatch = ({ searchStrings, listToSearch, opts }) => {
   const fuse = new Fuse(
@@ -87,12 +109,20 @@ const findMatch = ({ searchStrings, listToSearch, opts }) => {
     .map(({ item }) => item);
 }
 
-const toEscapedJSON = (obj) => JSON.stringify(JSON.stringify(obj));
+const adjustSettings = (args) => {
+  return {
+    ...args,
+    ...(args.line && { all: true })
+  }
+}
+
+const printEscapedJson = (obj) => console.log(JSON.stringify(JSON.stringify(obj)));
+const printJSON = (obj) => console.log(JSON.stringify(obj));
 
 const trueIfDefined = (arg) => !isUndefined(arg);
 
 const toOpts = (arg) => (
-  arg.map(item => item.split("\="))
+  arg.map(item => item.split('='))
      .reduce((opts, [key, value]) => ({
         ...opts,
         [camelCase(key)]: safeEval(value),
