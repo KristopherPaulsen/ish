@@ -52,6 +52,21 @@
     # Freak
   ```
 
+## Line matching mode
+
+  You can also match each line, individually, from a stream of lines.
+  Each line is matched individually against the possible matches, left to right,
+  best to worse.
+
+  ```
+    echo -e "cat cat kat\nkat kat kat\ndog dog alligator | ish --line 'dog' 'cat'
+
+    #cat
+    #kat
+    #dog
+  ```
+
+
 ## Supported Options:
 
   ```
