@@ -58,7 +58,7 @@
   Each line is matched individually against the possible matches, left to right,
   best to worse.
 
-  ```
+  ```bash
     echo -e "cat cat kat\nkat kat kat\ndog dog alligator | ish --line 'dog' 'cat'
 
     #cat
