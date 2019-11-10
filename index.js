@@ -87,7 +87,7 @@ const getLineMatches = (args, stdin) => (
         listToSearch: line.split(' '),
         opts: get(args, 'opts', {})
     })[0]
-  })
+  }).filter(match => match)
 );
 
 const findMatch = ({ searchStrings, listToSearch, opts }) => {
