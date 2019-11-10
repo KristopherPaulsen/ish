@@ -1,7 +1,4 @@
-const fs = require('fs');
-const path = require('path');
 const { spawnSync } = require('child_process');
-
 
 describe('ish', () => {
 
@@ -145,21 +142,25 @@ describe('ish', () => {
     });
   })
 
-  describe('weird inputs: no stdin', () => {
-    it('returns nothing when given nothing', () => {
-      const ish = spawnSync('./index.js');
+  describe('line mode', () => {
+    it('returns list of matches per line', () => {
+      const ish = spawnSync('./index.js', ['--line', 'dog', 'cat'], {
+        input: 'cat cat kat\nkat kat kat\ndog dog alligator',
+      });
 
       const result = ish.stdout.toString();
 
-      expect(result).toMatch('');
+      expect(result).toMatch('cat\nkat\ndog');
     });
 
-    it('returns nothing when given matches, but no stdin', () => {
-      const ish = spawnSync('./index.js', ['food']);
+    it('returns list of matches per line with --json, plural matches', () => {
+      const ish = spawnSync('./index.js', ['--line', '--json', 'dog', 'cat'], {
+        input: 'cat cat kat\nkat kat kat\ndog dog alligator',
+      });
 
       const result = ish.stdout.toString();
 
-      expect(result).toMatch('');
+      expect(result).toMatch('{"matches":["cat","kat","dog"]}');
     });
   });
 
