@@ -99,10 +99,8 @@ const getMatchesPerFile = async (args, stdin) => {
   );
 
 
-  console.log(contents);
-
   const fuse = new Fuse(
-    contents.map((contents, idx) => ({ contents, idx })),
+    contents.map((contents, idx) => ({ contents, idx, file: files[idx] })),
     {
       keys: ['contents'],
       tokenize: true,
@@ -111,7 +109,8 @@ const getMatchesPerFile = async (args, stdin) => {
     },
   );
 
-  const matches = args._.map(string => fuse.search(string)).flat();
+  let matches = args._.map(string => fuse.search(string)).flat();
+  matches = matches.sort((a,b) => a.score < b.score);
   console.log(JSON.stringify(matches, null, 2));
 }
 
