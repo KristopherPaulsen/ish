@@ -44,10 +44,10 @@ const main = async () => {
       describe: 'whether to process per line',
       coerce: trueIfDefined,
     })
-    .option('file', {
-      alias: 'file',
+    .option('files', {
+      alias: 'files',
       type: 'boolean',
-      describe: 'whether to process per file',
+      describe: 'whether to process per files',
       coerce: trueIfDefined,
     })
     .option('i', {
@@ -62,12 +62,11 @@ const main = async () => {
   const stdin = await readFileAsync(0, 'utf8');
 
   const matches = await ( async () => {
-    if(args.file) return getMatchesPerFile(args, stdin);
-    return args.line ? getLineMatches(args, stdin) : getMatches(args, stdin);
-  })();
+    if(args.files) return getMatchesPerFile(args, stdin);
+    if(args.line) return getLineMatches(args, stdin);
 
-  console.log(await matches);
-  return;
+    return getMatches(args, stdin);
+  })();
 
   if (args.json && args.all) {
     printJSON({ matches });
@@ -99,16 +98,15 @@ const getMatchesPerFile = async (args, stdin) => {
     readFileAsync(path.resolve(file), 'utf8'))
   );
 
-  const matches = findMatch({
+  return findMatch({
     searchStrings: args._,
     listToSearch: contents,
     opts: {
       ...get(args, 'opts', {}),
       tokenize: true,
     }
-  });
-
-  return matches.map((match, idx) => ({
+  })
+  .map((match, idx) => ({
     file: path.resolve(files[idx]),
     //match,
   }));
@@ -155,7 +153,7 @@ const adjustSettings = (args) => {
   return {
     ...args,
     ...(args.line && { all: true }),
-    ...(args.file && { tokenize: true }),
+    ...(args.files && { all: true }),
   }
 }
 
