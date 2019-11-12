@@ -61,32 +61,13 @@ const main = async () => {
 
   const stdin = await readFileAsync(0, 'utf8');
 
-  if(args.file) {
+  const matches = await ( async () => {
+    if(args.file) return getMatchesPerFile(args, stdin);
+    return args.line ? getLineMatches(args, stdin) : getMatches(args, stdin);
+  })();
 
-    const files = stdin
-      .trim()
-      .split("\n")
-      .filter(path => !path.match(/^\.$|^\.\/$/));
-
-    const contents = await Promise.all(files.map(file =>
-      readFileAsync(path.resolve(file), 'utf8'))
-    );
-
-    const matches = findMatch({
-      searchStrings: args._,
-      listToSearch: contents,
-      opts: {
-        ...get(args, 'opts', {}),
-        tokenize: true,
-      }
-    })
-    console.log(matches.map((match, idx) => ({
-      file: path.resolve(files[idx]),
-      //match,
-    })))
-  }
-
-  const matches = args.line ? getLineMatches(args, stdin) : getMatches(args, stdin);
+  console.log(await matches);
+  return;
 
   if (args.json && args.all) {
     printJSON({ matches });
@@ -106,6 +87,31 @@ const main = async () => {
   else {
     console.log(get(matches, 0, ''));
   }
+}
+
+const getMatchesPerFile = async (args, stdin) => {
+  const files = stdin
+    .trim()
+    .split("\n")
+    .filter(path => !path.match(/^\.$|^\.\/$/));
+
+  const contents = await Promise.all(files.map(file =>
+    readFileAsync(path.resolve(file), 'utf8'))
+  );
+
+  const matches = findMatch({
+    searchStrings: args._,
+    listToSearch: contents,
+    opts: {
+      ...get(args, 'opts', {}),
+      tokenize: true,
+    }
+  });
+
+  return matches.map((match, idx) => ({
+    file: path.resolve(files[idx]),
+    //match,
+  }));
 }
 
 const getMatches = (args, stdin) => (
