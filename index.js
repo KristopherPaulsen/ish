@@ -98,18 +98,19 @@ const getMatchesPerFile = async (args, stdin) => {
     readFileAsync(path.resolve(file), 'utf8'))
   );
 
-  return findMatch({
-    searchStrings: args._,
-    listToSearch: contents,
-    opts: {
-      ...get(args, 'opts', {}),
+
+  const fuse = new Fuse(
+    contents.map((contents, idx) => ({ contents, idx })),
+    {
+      keys: ['contents'],
       tokenize: true,
-    }
-  })
-  .map((match, idx) => ({
-    file: path.resolve(files[idx]),
-    //match,
-  }));
+      includeScore: true,
+      findAllMatches: true,
+    },
+  );
+
+  const matches = args._.map(string => fuse.search(string)).flat();
+  console.log(JSON.stringify(matches, null, 2));
 }
 
 const getMatches = (args, stdin) => (
