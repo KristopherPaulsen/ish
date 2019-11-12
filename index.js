@@ -99,6 +99,8 @@ const getMatchesPerFile = async (args, stdin) => {
   );
 
 
+  console.log(contents);
+
   const fuse = new Fuse(
     contents.map((contents, idx) => ({ contents, idx })),
     {
