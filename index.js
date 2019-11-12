@@ -2,6 +2,7 @@
 const yargs = require('yargs');
 const Fuse = require('fuse.js');
 const fs = require('fs');
+const path = require('path');
 const { promisify } = require('util');
 const readFileAsync = promisify(fs.readFile); // (A)
 const { isUndefined, get, camelCase } = require('lodash');
@@ -43,12 +44,47 @@ const main = async () => {
       describe: 'whether to process per line',
       coerce: trueIfDefined,
     })
+    .option('file', {
+      alias: 'file',
+      type: 'boolean',
+      describe: 'whether to process per file',
+      coerce: trueIfDefined,
+    })
+    .option('i', {
+      alias: 'in-from-files',
+      type: 'string',
+    })
     .epilogue(help())
     .argv;
 
   const args = adjustSettings(rawArgs);
 
   const stdin = await readFileAsync(0, 'utf8');
+
+  if(args.file) {
+
+    const files = stdin
+      .trim()
+      .split("\n")
+      .filter(path => !path.match(/^\.$|^\.\/$/));
+
+    const contents = await Promise.all(files.map(file =>
+      readFileAsync(path.resolve(file), 'utf8'))
+    );
+
+    const matches = findMatch({
+      searchStrings: args._,
+      listToSearch: contents,
+      opts: {
+        ...get(args, 'opts', {}),
+        tokenize: true,
+      }
+    })
+    console.log(matches.map((match, idx) => ({
+      file: path.resolve(files[idx]),
+      //match,
+    })))
+  }
 
   const matches = args.line ? getLineMatches(args, stdin) : getMatches(args, stdin);
 
@@ -112,7 +148,8 @@ const findMatch = ({ searchStrings, listToSearch, opts }) => {
 const adjustSettings = (args) => {
   return {
     ...args,
-    ...(args.line && { all: true })
+    ...(args.line && { all: true }),
+    ...(args.file && { tokenize: true }),
   }
 }
 
