@@ -188,19 +188,20 @@ const help = () => `
 
       echo -e "cat cat kat\\nkat kat kat\\ndog dog alligator | ish --line 'dog' 'cat'
 
-      #cat
-      #kat
-      #dog
+      # cat
+      # kat
+      # dog
 
 
   Supported Options
 
-    * caseSensitive
-    * distance
-    * threshold
-    * location
-    * maxPatternLength
-    * minMatchCharLength
+    - case-sensitive
+    - distance
+    - threshold
+    - tokenize
+    - location
+    - max-pattern-length
+    - min-match-char-length
 
    echo "FOOD" | ish "food" --opts case-sensitive=true
       #

@@ -61,9 +61,9 @@
   ```bash
     echo -e "cat cat kat\nkat kat kat\ndog dog alligator | ish --line 'dog' 'cat'
 
-    #cat
-    #kat
-    #dog
+    # cat
+    # kat
+    # dog
   ```
 
 
@@ -73,12 +73,13 @@
     --opts case-sensitive=true threshold=0.5 ...
   ```
 
-  * caseSensitive
+  * case-sensitive
   * distance
   * threshold
+  * tokenize
   * location
-  * maxPatternLength
-  * minMatchCharLength
+  * max-pattern-length
+  * min-match-char-length
 
   ```bash
 
