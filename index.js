@@ -4,7 +4,7 @@ const Fuse = require('fuse.js');
 const fs = require('fs');
 const { promisify } = require('util');
 const readFileAsync = promisify(fs.readFile); // (A)
-const { isUndefined, get, camelCase } = require('lodash');
+const { isUndefined, get, camelCase, map, toString } = require('lodash');
 
 const main = async () => {
   if(!process.argv[2]) return;
@@ -46,7 +46,7 @@ const main = async () => {
     .epilogue(help())
     .argv;
 
-  const args = adjustSettings(rawArgs);
+  const args = normalizeArgs(rawArgs);
 
   const stdin = await readFileAsync(0, 'utf8');
 
@@ -72,13 +72,13 @@ const main = async () => {
   }
 }
 
-const getMatches = (args, stdin) => (
-  findMatch({
+const getMatches = (args, stdin) => {
+  return findMatch({
     searchStrings: args._,
     listToSearch: stdin.toString().split('\n'),
     opts: get(args, 'opts', {}),
   })
-)
+}
 
 const getLineMatches = (args, stdin) => (
   stdin.trim().split("\n").map(line => {
@@ -109,12 +109,11 @@ const findMatch = ({ searchStrings, listToSearch, opts }) => {
     .map(({ item }) => item);
 }
 
-const adjustSettings = (args) => {
-  return {
+const normalizeArgs = (args) => ({
     ...args,
-    ...(args.line && { all: true })
-  }
-}
+    ...(args.line && { all: true }),
+    _: map(args._, toString),
+})
 
 const printEscapedJson = (obj) => console.log(JSON.stringify(JSON.stringify(obj)));
 const printJSON = (obj) => console.log(JSON.stringify(obj));

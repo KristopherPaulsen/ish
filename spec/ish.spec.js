@@ -204,5 +204,15 @@ describe('ish', () => {
 
       expect(result).toMatch('');
     });
+
+    it('matches numbers, without weird coercions', () => {
+      const ish = spawnSync('./index.js', ['11'], {
+        input: '11',
+      });
+
+      const result = ish.stdout.toString();
+
+      expect(result).toMatch('11');
+    });
   });
 });
