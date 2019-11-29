@@ -52,7 +52,7 @@ describe('ish', () => {
 
       const result = ish.stdout.toString();
 
-      expect(result).toMatch("{\"match\":\"Food\"}");
+      expect(JSON.parse(result)).toEqual('\"Food\"');
     });
 
     it('returns json output for multi match', () => {
@@ -62,7 +62,7 @@ describe('ish', () => {
 
       const result = ish.stdout.toString();
 
-      expect(result).toMatch("{\"match\":\"Food\"}");
+      expect(JSON.parse(result)).toEqual('\"Food\"');
     });
 
     it('returns json output when combined with --all, but only close matches', () => {
@@ -72,7 +72,7 @@ describe('ish', () => {
 
       const result = ish.stdout.toString();
 
-      expect(result).toMatch("{\"matches\":[\"Food\"]}");
+      expect(JSON.parse(result)).toEqual(['Food']);
     });
 
     it('returns json output when combined with --all, but only for multiple close matches', () => {
@@ -82,7 +82,7 @@ describe('ish', () => {
 
       const result = ish.stdout.toString();
 
-      expect(result).toMatch("{\"matches\":[\"Food\",\"Fodd\"]}");
+      expect(JSON.parse(result)).toEqual(['Food', 'Fodd']);
     });
   })
 
@@ -94,7 +94,7 @@ describe('ish', () => {
 
       const result = ish.stdout.toString();
 
-      expect(result).toMatch("\"{\\\"match\\\":\\\"Food\\\"}\"");
+      expect(JSON.parse(result)).toEqual('\"Food\"');
     });
 
     it('returns escaped json string for multi match', () => {
@@ -104,7 +104,7 @@ describe('ish', () => {
 
       const result = ish.stdout.toString();
 
-      expect(result).toMatch("\"{\\\"matches\\\":[\\\"Food\\\",\\\"Fodd\\\"]}\"");
+      expect(result).toMatch("\"[\\\"Food\\\",\\\"Fodd\\\"]\"");
     });
   })
 
@@ -160,7 +160,7 @@ describe('ish', () => {
 
       const result = ish.stdout.toString();
 
-      expect(result).toMatch('{"matches":["cat","kat","dog"]}');
+      expect(JSON.parse(result)).toEqual(["cat","kat","dog"]);
     });
   });
 
@@ -182,7 +182,7 @@ describe('ish', () => {
 
       const result = ish.stdout.toString();
 
-      expect(result).toMatch("{\"match\":\"\"}");
+      expect(result).toMatch("");
     });
 
     it('returns empty json when given nothing, and using --json --all', () => {
@@ -192,7 +192,7 @@ describe('ish', () => {
 
       const result = ish.stdout.toString();
 
-      expect(result).toMatch("{\"matches\":[]}");
+      expect(JSON.parse(result)).toEqual([]);
     });
 
     it('returns nothing when given nothing, and using --all', () => {

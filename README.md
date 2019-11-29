@@ -32,10 +32,10 @@
 
   ```bash
   echo -e "Food\nDrink\nSnacks" | ish 'fodd' --json
-    # { "match": "Food" }
+    # "Food"
 
   echo "Food" | ish 'food' --json-string
-    # "{\"match\":\"Food\"}"
+    # "\"Food\""
   ```
 
 ## All matches Output
@@ -44,7 +44,7 @@
 
   ```bash
   echo -e "Food\nFodge\nFreak" | ish 'fo' --all --json
-    # { "matches": [ "Food", "Fodge", "Freak" ] }
+    # [ "Food", "Fodge", "Freak" ]
 
   echo -e "Food\nFodge\nFreak" | ish 'fo' --all
     # Food

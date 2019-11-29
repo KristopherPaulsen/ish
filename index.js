@@ -53,16 +53,16 @@ const main = async () => {
   const matches = args.line ? getLineMatches(args, stdin) : getMatches(args, stdin);
 
   if (args.json && args.all) {
-    printJSON({ matches });
+    printJSON(matches);
   }
   else if (args.jsonString && args.all) {
-    printEscapedJson({ matches });
+    printEscapedJson(matches);
   }
   else if(args.json) {
-    printJSON({ match: get(matches, 0, '') });
+    printJSON(JSON.stringify(get(matches, 0, '')));
   }
   else if (args.jsonString) {
-    printEscapedJson({ match: get(matches, 0, '') });
+    printEscapedJson(get(matches, 0, ''));
   }
   else if(args.all) {
     matches.forEach(match => console.log(match));
@@ -164,16 +164,16 @@ const help = () => `
   Example (JSON output) Usefull for chaining with jq, fx, etc
 
     echo -e "Food\\nDrink\\nSnacks" | ish 'fodd' --json
-      # { "match": "Food" }
+      # "Food"
 
     echo "Food" | ish 'food' --json-string
-      # "{\\"match\\":\\"Food\\"}"
+      # "\\"Food\\""
 
 
   Listing all possible matches, left to right, best to worst.
 
     echo -e "Food\\nFodge\\nFreak" | ish 'fodd' --all --json
-      # { "matches": [ "Food", 'Fodge', "Freak" ] }
+      # [ "Food", 'Fodge', "Freak" ]
 
     echo -e "Foood\\nFodge\\nFreak" | ish 'fodd' --all
       # Food
