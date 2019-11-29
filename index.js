@@ -177,7 +177,7 @@ const help = () => `
 
     echo -e "Foood\\nFodge\\nFreak" | ish 'fodd' --all
       # Food
-      # Fodge
+      # Fodg.e
       # Freak
 
   Line matching mode
