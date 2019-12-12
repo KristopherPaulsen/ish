@@ -1,6 +1,6 @@
 {
   "name": "@kcpaulsen/ish",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "Fuzzy command line cli tool",
   "main": "./index.js",
   "scripts": {
@@ -22,7 +22,8 @@
   "license": "MIT",
   "dependencies": {
     "fuse.js": "^3.4.5",
-    "lodash": "^4.17.15"
+    "lodash": "^4.17.15",
+    "yargs": "^15.0.2"
   },
   "bin": {
     "ish": "./index.js"
